@@ -43,22 +43,27 @@
   };
 
   # Enable the X11 windowing system.
+  # Disabled as of NixOS 25.11 requirement
   services.xserver.enable = true;
 
   # Gaming
   services.xserver.videoDrivers = [ "intel" ];  # AMD GPU, or "intel" for Intel iGPU
-  hardware.opengl.enable = true;
-  hardware.opengl.extraPackages = with pkgs; [
+  hardware.graphics.enable = true;
+  hardware.graphics.extraPackages = with pkgs; [
     mesa
     vulkan-loader
     vulkan-tools
   ];
-  hardware.opengl.driSupport32Bit = true;  # Needed for some Steam/Wine games
+  hardware.graphics.enable32Bit = true;  # Needed for some Steam/Wine games
   programs.gamemode.enable = true;           # Optimize game performance
 
   # Enable the GNOME Desktop Environment.
+  # Pre-25.11
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  # Ready for 25.11
+  # services.displayManger.gdm.enable = true;
+  # services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -109,6 +114,24 @@
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
+     # GNOME Essentials
+     # GNOME Core
+     gnome-shell
+     ptyxis
+     gnome-control-center
+     gnome-tweaks
+
+     # GNOME Extensions
+     gnomeExtensions.dash-to-dock
+     gnomeExtensions.blur-my-shell
+     gnomeExtensions.just-perfection
+     gnomeExtensions.appindicator
+
+     # GNOME Apps
+     nautilus
+     evince
+     eog
+     
      # Browser
      firefox
      brave
